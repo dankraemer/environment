@@ -3,3 +3,10 @@ Installation:
 
     cd ~
     git clone ssh://dka@10.83.157.179/srv/git/env_setup .env_setup
+
+Create symlinks:
+
+    ln -s ~/.env_setup/.gitconfig ~/.gitconfig 
+    ln -s ~/.env_setup/.bash_aliases ~/.bash_aliases 
+
+
