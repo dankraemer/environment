@@ -26,6 +26,7 @@ alias la='ls -A'                              # all but . and ..
 alias l='ls -CF'                              #
 alias cls='clear;ls'
 alias clsa='clear;ls -la'
+alias x='exit'
 
 # Common locations for RLs devel VMs
 
@@ -35,6 +36,15 @@ alias uclinux='cd /home/dka/work/uClinux-dist'
 
 # Local machine Cygwin shortcuts
 
-alias vm='run mintty ssh dka@rl131-a'
+alias vm1='run mintty ssh dka@rl131-a'
+alias vm2='run mintty ssh dka@10.83.157.179'
 alias herc='run mintty ssh dka@hercules'
+
+alias launch='~/scripts/launch.sh'
+
+# Virtual Machines shortcuts
+
+alias vm131='ssh dka@rl131-a'
+alias vm1xx='ssh dka@10.83.157.179'           # ssh dka@rl1xx-a
+alias her='ssh dka@hercules'
 
