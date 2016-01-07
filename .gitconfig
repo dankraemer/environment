@@ -4,8 +4,23 @@
 [core]
     editor = vim
 [color]
-    status = always
-	ui = auto
+    ui = auto
+    status = auto
+    branch = auto
+    diff = auto
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+[color "branch"]
+    current = yellow bold
+    local = yellow
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
 [alias]
     tree = log --graph --decorate --pretty=oneline --abbrev-commit
     files = show --name-only
