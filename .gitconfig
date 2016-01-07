@@ -5,6 +5,7 @@
     editor = vim
 [color]
     status = always
+	ui = auto
 [alias]
     tree = log --graph --decorate --pretty=oneline --abbrev-commit
     files = show --name-only
