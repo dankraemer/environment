@@ -32,7 +32,10 @@ alias x='exit'
 
 alias pub='cd /var/pub/firmware/'
 alias instr='cd /home/dka/work/uClinux-dist/user/rl1xx/instrument/'
-alias uclinux='cd /home/dka/work/uClinux-dist'
+alias uclinux='cd /home/dka/work/uClinux-dist/'
+alias dvr='cd /home/dka/work/linux-2.6/arch/nios2/drivers/'
+alias linux='cd /home/dka/work/linux-2.6/'
+alias dts='cd /home/dka/work/rl1xx/syn/altera/'
 
 # Local machine Cygwin shortcuts
 
