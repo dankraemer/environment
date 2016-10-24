@@ -40,7 +40,7 @@ alias dts='cd /home/dka/work/rl1xx/syn/altera/'
 # Local machine Cygwin shortcuts
 
 alias vm1='run mintty ssh dka@rl131-a'
-alias vm2='run mintty ssh dka@10.83.157.179'
+alias vm2='run mintty ssh dka@rl1xx-a'
 alias herc='run mintty ssh dka@hercules'
 
 alias launch='~/scripts/launch.sh'
@@ -48,6 +48,6 @@ alias launch='~/scripts/launch.sh'
 # Virtual Machines shortcuts
 
 alias vm131='ssh dka@rl131-a'
-alias vm1xx='ssh dka@10.83.157.179'           # ssh dka@rl1xx-a
+alias vm1xx='ssh dka@rl1xx-a'
 alias her='ssh dka@hercules'
 
