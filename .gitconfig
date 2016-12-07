@@ -26,3 +26,5 @@
     files = show --name-only
 [push]
 	default = current
+[url "https://github.com/"]
+	insteadOf = git://github.com/
