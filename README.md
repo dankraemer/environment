@@ -1,12 +1,20 @@
-# Description: Virtual Machine Environment Setup
-# Created by:  Dan Kraemer  (c) 2017
+# Virtual Machine Environment Setup
 
-## Clone Repository from Github
+Created by:  Dan Kraemer  (c) 2017
 
+Environment Setup for tools like github, tmux and vi.
+
+## Getting Started
+
+- Clone Repository from Github
+
+'''
  $ git clone https://github.build.ge.com/212526102/environment.git ~/.env_setup
+'''
 
-## Install Environment
+- Install Environment
 
+'''
  $ cd ~/.env_setup
  $ ./install-env
-
+'''
