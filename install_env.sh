@@ -10,17 +10,14 @@
 # (c) 2017
 #
 # Description:
-#   Virtual Machine Environment Setup
+#   Install Environment Setup
 #
 # #############################################################################
 
+# Create the Symbol Links
+ln -s ~/.env_setup/.bash_aliases ~/.bash_aliases 
+ln -s ~/.env_setup/.gitconfig    ~/.gitconfig 
+ln -s ~/.env_setup/.gitconfig    ~/.gitignore 
+ln -s ~/.env_setup/.tmux.conf    ~/.tmux.conf 
 
-# Clone Repository from Github
-
- $ git clone https://github.build.ge.com/212526102/environment.git ~/.env_setup
-
-# Install Environment
-
- $ cd ~/.env_setup
- $ ./install-env
 
