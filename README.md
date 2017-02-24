@@ -8,13 +8,13 @@ Environment Setup for tools like github, tmux and vi.
 
 - Clone Repository from Github
 
-'''
+```
  $ git clone https://github.build.ge.com/212526102/environment.git ~/.env_setup
-'''
+```
 
 - Install Environment
 
-'''
+```
  $ cd ~/.env_setup
  $ ./install-env
-'''
+```
