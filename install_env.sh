@@ -35,4 +35,9 @@ ln -s ~/.env_setup/configs/.tmux.conf    ~/.tmux.conf
 # Protect SSH configuration
 #chmod 600 $DIR/ssh/*
 
+# Add custom scripts and binaries to PATH
+echo 'export PATH=$PATH:$HOME/.env_setup/bin' >> .bashrc
+echo 'export PATH=$PATH:$HOME/.scripts/'      >> .bashrc
+
+
 echo $SCRIPT_MSG"New Environment Installed!"
