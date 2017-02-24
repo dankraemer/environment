@@ -14,10 +14,26 @@
 #
 # #############################################################################
 
-# Create the Symbol Links
+SCRIPT_MSG=" [INSTALL ENV] "
+
+# Backup old configuration files
+echo $SCRIPT_MSG"Backup old config files"
+mkdir ~/.old
+mv ~/.bashrc    ~/.old/.bashrc.old
+mv ~/.gitconfig ~/.old/.gitconfig.old
+mv ~/.ssh       ~/.old/.ssh.old
+mv ~/.tmux.conf ~/.old/.tmux.conf.old
+mv ~/.vim       ~/.old/.vim.old
+mv ~/.vimrc     ~/.old/.vimrc.old
+
+# Create the Symbolic Links for new configuration files
+echo $SCRIPT_MSG"Create links for new config files"
 ln -s ~/.env_setup/.bash_aliases ~/.bash_aliases 
 ln -s ~/.env_setup/.gitconfig    ~/.gitconfig 
 ln -s ~/.env_setup/.gitconfig    ~/.gitignore 
 ln -s ~/.env_setup/.tmux.conf    ~/.tmux.conf 
 
+# Protect SSH configuration
+#chmod 600 $DIR/ssh/*
 
+echo $SCRIPT_MSG"New Environment Installed!"
