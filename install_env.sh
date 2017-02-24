@@ -28,10 +28,9 @@ mv ~/.vimrc     ~/.old/.vimrc.old
 
 # Create the Symbolic Links for new configuration files
 echo $SCRIPT_MSG"Create links for new config files"
-ln -s ~/.env_setup/.bash_aliases ~/.bash_aliases 
-ln -s ~/.env_setup/.gitconfig    ~/.gitconfig 
-ln -s ~/.env_setup/.gitconfig    ~/.gitignore 
-ln -s ~/.env_setup/.tmux.conf    ~/.tmux.conf 
+ln -s ~/.env_setup/configs/.bash_aliases ~/.bash_aliases 
+ln -s ~/.env_setup/configs/.gitconfig    ~/.gitconfig 
+ln -s ~/.env_setup/configs/.tmux.conf    ~/.tmux.conf 
 
 # Protect SSH configuration
 #chmod 600 $DIR/ssh/*
