@@ -1,0 +1,22 @@
+Host dr60
+  HostName dr60-a
+
+Host rl1xx 
+  HostName rl1xx-a
+
+Host rl131 
+  HostName rl131-a
+
+Host mu320
+  HostName mu320-a
+
+Host platform
+  HostName platform-a
+
+Host *
+  ServerAliveInterval=30
+  ServerAliveCountMax=6
+  RSAAuthentication yes
+  PasswordAuthentication yes
+  User dka
+
