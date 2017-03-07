@@ -1,0 +1,204 @@
+#!/bin/sh
+. /home/mgr/environment/scripts/include.sh
+
+TARGET=$RP6
+TRANSFER_CMD="scppwd $pwdsoc "
+EXEC_CMD="sshpwd $pwdsoc "
+
+check() {
+  if [ $1 != 0 ]; then
+    echo ">>> =("
+    exit 1
+  fi
+}
+
+killer() {
+  echo -n ">>> Killing"
+  pid=`${EXEC_CMD} $TARGET ps ax | grep $EXECUTABLE | grep -v grep | grep -v 'sh -c' | awk '{print $1}'`
+  echo " $pid..."
+  ${EXEC_CMD} $TARGET kill $pid
+
+  sleep 1
+  pid=`${EXEC_CMD} $TARGET ps ax | grep $EXECUTABLE | grep -v grep | grep -v 'sh -c' | awk '{print $1}'`
+  if [ "$pid" != "" ]; then
+      echo ">>> Forced killing $pid..."
+      ${EXEC_CMD} $TARGET kill -9 $pid
+  fi
+}
+
+clean() {
+  echo ">>> Cleaning..."
+  make $PACKAGE-dirclean
+}
+
+clean_remote() {
+  echo ">>> Remote cleaning..."
+  ${EXEC_CMD} $TARGET rm $EXECUTABLE
+  echo -n
+}
+
+build() {
+  echo ">>> Building..."
+  make $PACKAGE-rebuild
+}
+
+transfer() {
+  echo ">>> Transfering... ($1)"
+  ${TRANSFER_CMD} $TARGET $1
+}
+
+run_wait() {
+  echo ">>> Running... ($1)"
+  ${EXEC_CMD} $TARGET $1
+}
+
+run_local() {
+  echo ">>> Locally running... ($1)"
+  $1
+}
+
+execute_wait() {
+  echo ">>> Executing..."
+  ${EXEC_CMD} $TARGET ./$EXECUTABLE $PARAMS
+}
+
+execute_back() {
+  echo ">>> Background executing..."
+  ${EXEC_CMD} $TARGET ./$EXECUTABLE $PARAMS &
+}
+
+signal() {
+  pid=`${EXEC_CMD} $TARGET ps ax | grep $EXECUTABLE | grep -v grep | grep -v 'sh -c' | awk '{print $1}'`
+  ${EXEC_CMD} $TARGET kill -$1 $pid 
+}
+
+reboot_eq_forced() {
+  echo ">>> Forcing reboot..."
+  ${EXEC_CMD} $TARGET 'reboot -f'
+}
+
+remove_inittab() {
+  echo ">>> Removing from inittab..."
+  ${EXEC_CMD} $TARGET sed -i "/$EXECUTABLE/d" /etc/inittab
+  ${EXEC_CMD} $TARGET kill -1 1
+}
+
+invalid() {
+  echo "Invalid option: -$1"
+}
+
+param() {
+  echo "Option -$1 requires an argument"
+}
+
+usage() {
+  echo "Usage: $1 [OPTIONS]"
+  echo ""
+  echo "Configuration:"
+  echo "  -p [PKG]\t package name"
+  echo "  -e [EXEC]\t executable name"
+  echo "  -b [BIN]\t binary path"
+  echo "  -I [ADDR]\t equipment address (default $TARGET)"
+  echo ""
+  echo "Local:"
+  echo "  -C\t\t clean"
+  echo "  -B\t\t build"
+  echo "  -T\t\t transfer"
+  echo "  -L\t\t local run"
+  echo ""
+  echo "Remote:"
+  echo "  -c\t\t remote clean"
+  echo "  -k\t\t kill"
+  echo "  -x\t\t execute and wait"
+  echo "  -g\t\t background execution"
+  echo "  -t [OPT]\t time to sleep"
+  echo "  -s\t\t trigger"
+  echo "  -r\t\t reboot"
+  echo "  -f\t\t forced reboot"
+  echo "  -i\t\t remove from inittab"
+  echo "  -l [OPT]\t script to run"
+  
+}
+
+RUN=0
+
+while getopts ":p: :e: :b: :I: :C :B :T :c :k :x :g :t: :s :r :f :i :l: :L:" opt; do
+  RUN=1
+  case $opt in
+    p)
+      PACKAGE="$OPTARG"
+      echo "Package name: $PACKAGE"
+      ;;
+    e)
+      EXECUTABLE="$OPTARG"
+      echo "Executable name: $EXECUTABLE"
+      ;;
+    b)
+      BINARY="$OPTARG"
+      echo "Binary path: $BINARY"
+      ;;
+    I)
+      TARGET="$OPTARG"
+      echo "Equipment target: 10.83.158.$TARGET"
+      ;;
+    C)
+      clean
+      ;;
+    B)
+      build
+      ;;
+    T)
+      transfer $BINARY
+      ;;
+    c)
+      clean_remote
+      ;;
+    k)
+      killer
+      ;;
+    x)
+      execute_wait
+      ;;
+    g)
+      execute_back
+      ;;
+    t)
+      my_sleep $OPTARG
+      ;;
+    s)
+      signal '12'
+      ;;
+    r)
+      reboot_eq
+      ;;
+    f)
+      reboot_eq_forced
+      ;;
+    i)
+      remove_inittab
+      ;;
+    l)
+      transfer $OPTARG
+      run_wait "sh $OPTARG"
+      ;;
+    L)
+      run_local "$OPTARG"
+      ;;
+    :)
+      param $OPTARG
+      RUN=0
+      ;;
+    \?)
+      invalid $OPTARG
+      RUN=0
+      ;;
+  esac
+  check $?
+done
+
+if [ "$RUN" != "1" ]; then
+  usage $0
+  exit 1
+fi
+
+echo ">>> Done!"

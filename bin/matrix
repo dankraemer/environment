@@ -1,0 +1,72 @@
+#!/bin/bash
+
+trap "echo -e '\033[m0';clear;setterm -cursor on;exit" 2
+
+setterm -cursor off
+
+Chars="abcdefghijklmnopqrstuvxywzABCDEFGHIJKLMNOPQRSTUVXYWZ01234567890!@#$%&()_-+=^~{}[];:?"
+
+#Chars=(ｱ ｲ ｳ ｴ ｵ ｶ ｷ ｸ ｹ ｺ ｻ ｼ ｽ ｾ ｿ ﾀ ﾁ ﾂ ﾃ ﾄ ﾅ ﾆ ﾇ ﾈ ﾉ ﾊ ﾋ ﾌ ﾍ ﾎ ﾏ ﾐ ﾑ ﾒ ﾓ ﾔ ﾕ ﾖ ﾗ ﾘ ﾙ ﾚ ﾛ ﾜ ヲ ﾝ)
+
+clear
+LOCKF=~/.lockmatrix
+
+trap 'rm -rf "$LOCKF"; exit 0' INT TERM EXIT
+
+animate() {
+  speed=$1
+  eraser=$2
+  while true; do
+    lin=0
+    [ ${#Cols[@]} -eq $(($(tput cols)-2)) ] && unset Cols
+    while true; do
+      COL=$((RANDOM%$(tput cols)))
+      [ "${Cols[$COL]}" ] && continue
+      Cols[$COL]=1
+      break
+    done
+    CODE=$((RANDOM%8))
+    COR="\e[3${CODE};1m"
+    while [ $lin -lt $(tput lines) ]; do
+      if [ "$eraser" == "1" ]; then 
+        Char=' '; 
+        COR="\e[31;1m"
+      else 
+        Char=$(echo $Chars | cut -c$((RANDOM%86+1)))
+      fi
+
+#      while true; do
+#        if mkdir $LOCKF &> /dev/null; then
+#          break
+#        fi
+#      done
+
+      for i in `seq 1 5`;do
+        Char1=$(echo $Chars | cut -c$i);sleep 0.000001
+#        tput cup $lin $COL; echo -en "\e[37;1m$Char1"
+      done
+     tput cup $lin $COL; echo -en "$COR$Char";sleep $speed
+      let lin++
+      rm -rf $LOCKF
+    done
+  done
+}
+
+animate 0.0001 0 &
+sleep 1
+animate 0.01 1 &
+sleep 1
+animate 0.0001 1 &
+sleep 1
+animate 1 0 &
+sleep 4
+animate 0.1 0 &
+sleep 5
+animate 0.001 1 &
+sleep 0.1
+animate 1 1 &
+
+while true; do
+#  clear
+  sleep 120
+done

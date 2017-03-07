@@ -1,0 +1,31 @@
+#!/bin/sh
+
+list=`git status | grep "modified:" | awk '{print $2}'`
+
+check() {
+  opt=""
+  while [ "$opt" != "n" ]; do
+    clear
+    git diff $i
+    echo -n "File '$i' - (a/e/r/n): "
+    read opt
+    case $opt in
+      "a")
+        git add $i
+        opt="n"
+      ;;
+      "e")
+        vi $i
+      ;;
+      "r")
+        git checkout -- $i
+        opt="n"
+      ;;
+    esac
+  done
+}
+
+
+for i in $list; do
+  check $i
+done
