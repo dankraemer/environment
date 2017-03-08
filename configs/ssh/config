@@ -13,6 +13,9 @@ Host mu320
 Host platform
   HostName platform-a
 
+Host 10.83.158.*
+  User root
+
 Host *
   ServerAliveInterval=30
   ServerAliveCountMax=6
