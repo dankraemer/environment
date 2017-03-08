@@ -35,7 +35,7 @@ ln -s ~/.env_setup/configs/ssh/config   ~/.ssh/config
 ln -s ~/.vim/vimrc                      ~/.vimrc 
 
 # Protect SSH configuration
-chmod 600 $DIR/ssh/*
+chmod 600 $HOME/.ssh/*
 
 # Add custom scripts and binaries to PATH
 echo 'PATH=$PATH:$HOME/.env_setup/bin' >> .bashrc
