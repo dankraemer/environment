@@ -28,6 +28,10 @@ alias cls='clear;ls'
 alias clsa='clear;ls -la'
 alias x='exit'
 
+# Common used programs
+
+alias open='cygstart.exe'
+
 # Common locations for RLs devel VMs
 
 alias pub='cd /var/pub/firmware/'
