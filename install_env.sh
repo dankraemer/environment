@@ -1,3 +1,4 @@
+#!/bin/bash
 # #############################################################################
 #  _____                _  __                                   
 # |  __ \              | |/ /                                   
@@ -12,34 +13,93 @@
 # Description:
 #   Install Environment Setup
 #
-# #############################################################################
+##############################################################################
 
-SCRIPT_MSG=" [INSTALL ENV] "
+SCRIPT_MSG=" [ENV] "
 
-# Backup old configuration files
-echo $SCRIPT_MSG"Backup old config files"
-#mkdir ~/.old
-#mv ~/.bashrc    ~/.old/.bashrc.old
-#mv ~/.gitconfig ~/.old/.gitconfig.old
-#mv ~/.ssh       ~/.old/.ssh.old
-#mv ~/.tmux.conf ~/.old/.tmux.conf.old
-#mv ~/.vim       ~/.old/.vim.old
-#mv ~/.vimrc     ~/.old/.vimrc.old
+backup_setup() {
+  echo "$SCRIPT_MSG""Backup old config files"
+  if [ -d "$HOME"/.old ]; then
+    echo "$SCRIPT_MSG""Directory $HOME/.old already exists"
+  else
+    echo "$SCRIPT_MSG""Create $HOME/.old directory"
+    mkdir "$HOME"/.old
+  fi
+}
 
-# Create the Symbolic Links for new configuration files
-echo $SCRIPT_MSG"Create links for new config files"
-ln -s ~/.env_setup/configs/bash_aliases ~/.bash_aliases 
-ln -s ~/.env_setup/configs/gitconfig    ~/.gitconfig 
-ln -s ~/.env_setup/configs/tmux.conf    ~/.tmux.conf 
-ln -s ~/.env_setup/configs/ssh/config   ~/.ssh/config 
-ln -s ~/.vim/vimrc                      ~/.vimrc 
+backup_file() {
+  if [ -f "$HOME"/."$1" ]; then
+    echo "$SCRIPT_MSG""Backup $HOME/.$1 file"
+    case $1 in
+      bashrc)
+        cp "$HOME"/."$1" "$HOME"/.old/."$1".old
+        ;;
+      *)
+        mv "$HOME"/."$1" "$HOME"/.old/."$1".old
+        #cp "$HOME"/."$1" "$HOME"/.old/."$1".old
+        ;;
+    esac
+  else
+    echo "$SCRIPT_MSG""File $HOME/.$1 doesn't exist"
+  fi
+}
 
-# Protect SSH configuration
-chmod 600 $HOME/.ssh/*
+backup_dir() {
+  if [ -d "$HOME"/."$1" ]; then
+    echo "$SCRIPT_MSG""Backup $HOME/.$1 directory"
+    cp -rf "$HOME"/."$1" "$HOME"/.old/."$1"
+  else
+    echo "$SCRIPT_MSG""Directory $HOME/.$1 doesn't exist"
+  fi
+}
 
-# Add custom scripts and binaries to PATH
-echo 'PATH=$PATH:$HOME/.env_setup/bin' >> .bashrc
-echo 'PATH=$PATH:$HOME/.scripts/'      >> .bashrc
+setup_config() {
+  echo "$SCRIPT_MSG""Setup config for $HOME/.$1"
+  case $1 in
+    bashrc)
+      if grep -q ".env_setup" ".$1"; then
+        echo "$SCRIPT_MSG""PATH already in $HOME/.$1"
+      else
+        echo 'PATH=$PATH:$HOME/.env_setup/bin' >> .bashrc
+        echo 'PATH=$PATH:$HOME/.scripts/'      >> .bashrc
+      fi
+      ;;
+    vimrc)
+      ln -s "$HOME"/.vim/"$1" "$HOME"/."$1"
+      ;;
+    ssh/config)
+      ln -s "$HOME"/.env_setup/configs/"$1" "$HOME"/."$1"
+      chmod 600 "$HOME"/.ssh/*
+      ;;
+    *)
+      ln -s "$HOME"/.env_setup/configs/"$1" "$HOME"/."$1"
+      ;;
+  esac
+}
 
+echo "$SCRIPT_MSG""Installing Environment ..."
 
-echo $SCRIPT_MSG"New Environment Installed!"
+backup_setup
+
+backup_file  bashrc
+setup_config bashrc
+
+backup_file  bash_aliases
+setup_config bash_aliases
+
+backup_file  gitconfig
+setup_config gitconfig
+
+backup_file  tmux.conf
+setup_config tmux.conf
+
+backup_dir vim
+backup_file  vimrc
+setup_config vimrc
+
+backup_dir ssh
+backup_file  ssh/config
+setup_config ssh/config
+
+echo "$SCRIPT_MSG""New Environment Installed!"
+
