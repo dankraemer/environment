@@ -13,13 +13,27 @@ Host mu320
 Host platform
   HostName platform-a
 
-Host 10.83.158.*
-  User root
+Host darwin
+  HostName darwin-a
+
+Host markV
+  HostName 127.0.1.1
+  Port 2222
+
+Host 10.7.77.*
+  ServerAliveInterval=30
+  ServerAliveCountMax=6
+  User dsv
+
+Host 192.168.0.199
+  User dsv
+
+Host 192.168.1.199
+  User dsv
 
 Host *
   ServerAliveInterval=30
   ServerAliveCountMax=6
-  RSAAuthentication yes
   PasswordAuthentication yes
   User dka
 
